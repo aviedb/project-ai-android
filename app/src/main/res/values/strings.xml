@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MyWorkout</string>
+    <string name="workout_type">Workout Type</string>
+    <string name="workout_duration">Duration (minutes)</string>
+    <string name="workout_strength">Strength Level</string>
+    <string name="workout_tools">Use of tools?</string>
+    <string name="submit">Submit</string>
 </resources>
