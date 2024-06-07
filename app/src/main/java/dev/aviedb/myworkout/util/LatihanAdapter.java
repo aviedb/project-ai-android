@@ -1,17 +1,12 @@
 package dev.aviedb.myworkout.util;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import java.util.List;
 
@@ -45,7 +40,7 @@ public class LatihanAdapter extends RecyclerView.Adapter<LatihanAdapter.LatihanV
   static class LatihanViewHolder extends RecyclerView.ViewHolder {
     private TextView titleTextView, typeTextView, bodyPartTextView, equipmentTextView, levelTextView;
 
-    public LatihanViewHolder(@NonNull View itemView) {
+    LatihanViewHolder(@NonNull View itemView) {
       super(itemView);
       titleTextView = itemView.findViewById(R.id.titleTextView);
       typeTextView = itemView.findViewById(R.id.typeTextView);
@@ -56,10 +51,10 @@ public class LatihanAdapter extends RecyclerView.Adapter<LatihanAdapter.LatihanV
 
     void bind(Latihan latihan) {
       titleTextView.setText(latihan.getTitle());
-      typeTextView.setText(latihan.getType());
-      bodyPartTextView.setText(latihan.getBodyPart());
-      equipmentTextView.setText(latihan.getEquipment());
-      levelTextView.setText(latihan.getLevel());
+      typeTextView.setText(String.valueOf(latihan.getType()));
+      bodyPartTextView.setText(String.valueOf(latihan.getBodyPart()));
+      equipmentTextView.setText(String.valueOf(latihan.getEquipment()));
+      levelTextView.setText(String.valueOf(latihan.getLevel()));
     }
   }
 }

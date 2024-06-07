@@ -2,12 +2,12 @@ package dev.aviedb.myworkout.util;
 
 public class Latihan {
   private String title;
-  private String type;
-  private String bodyPart;
-  private String equipment;
-  private String level;
+  private int type;
+  private int bodyPart;
+  private int equipment;
+  private int level;
 
-  public Latihan(String title, String type, String bodyPart, String equipment, String level) {
+  public Latihan(String title, int type, int bodyPart, int equipment, int level) {
     this.title = title;
     this.type = type;
     this.bodyPart = bodyPart;
@@ -15,24 +15,24 @@ public class Latihan {
     this.level = level;
   }
 
-  // Getters and setters
+  // Getters
   public String getTitle() {
     return title;
   }
 
-  public String getType() {
+  public int getType() {
     return type;
   }
 
-  public String getBodyPart() {
+  public int getBodyPart() {
     return bodyPart;
   }
 
-  public String getEquipment() {
+  public int getEquipment() {
     return equipment;
   }
 
-  public String getLevel() {
+  public int getLevel() {
     return level;
   }
 }
