@@ -7,14 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Spinner
-        android:id="@+id/spinnerType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/workout_type"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <Spinner-->
+<!--        android:id="@+id/spinnerType"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="@string/workout_type"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <Spinner
         android:id="@+id/spinnerBodyPart"
@@ -23,7 +23,7 @@
         android:hint="@string/workout_bodypart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerType" />
+        app:layout_constraintTop_toBottomOf="parent" />
 
     <Spinner
         android:id="@+id/spinnerLevel"
@@ -34,14 +34,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerBodyPart" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switchEquipment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/workout_tools"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerLevel" />
+<!--    <com.google.android.material.switchmaterial.SwitchMaterial-->
+<!--        android:id="@+id/switchEquipment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/workout_tools"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/spinnerLevel" />-->
 
     <Button
         android:id="@+id/submitButton"
@@ -50,7 +50,7 @@
         android:text="@string/submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchEquipment" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerBodyPart" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

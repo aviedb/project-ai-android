@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
       String kesulitan = spinnerLevel.getSelectedItem().toString();
       boolean peralatan = switchEquipment.isChecked();
       String peralatanStr = peralatan ? "Yes" : "No";
-
       if (jenis.isEmpty() || bodyPart.isEmpty() || kesulitan.isEmpty()) {
         Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
         return;
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void showRecommendations(List<Latihan> rekomendasi) {
-    adapter = new LatihanAdapter(rekomendasi);
+    adapter = new LatihanAdapter(rekomendasi, dataLoader);
     recyclerView.setAdapter(adapter);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
   }

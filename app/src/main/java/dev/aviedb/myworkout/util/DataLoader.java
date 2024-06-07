@@ -21,6 +21,12 @@ public class DataLoader {
   private Map<String, Integer> equipmentMap = new HashMap<>();
   private Map<String, Integer> levelMap = new HashMap<>();
 
+  // Reverse maps to convert numerical values back to categorical values
+  private Map<Integer, String> reverseTypeMap = new HashMap<>();
+  private Map<Integer, String> reverseBodyPartMap = new HashMap<>();
+  private Map<Integer, String> reverseEquipmentMap = new HashMap<>();
+  private Map<Integer, String> reverseLevelMap = new HashMap<>();
+
   public DataLoader(Context context) {
     this.context = context;
   }
@@ -49,18 +55,26 @@ public class DataLoader {
         String equipment = nextLine[5];
         String level = nextLine[6];
 
-        // Map categorical values to numerical
+        // Map categorical values to numerical and reverse
         if (!typeMap.containsKey(type)) {
-          typeMap.put(type, typeCounter++);
+          typeMap.put(type, typeCounter);
+          reverseTypeMap.put(typeCounter, type);
+          typeCounter++;
         }
         if (!bodyPartMap.containsKey(bodyPart)) {
-          bodyPartMap.put(bodyPart, bodyPartCounter++);
+          bodyPartMap.put(bodyPart, bodyPartCounter);
+          reverseBodyPartMap.put(bodyPartCounter, bodyPart);
+          bodyPartCounter++;
         }
         if (!equipmentMap.containsKey(equipment)) {
-          equipmentMap.put(equipment, equipmentCounter++);
+          equipmentMap.put(equipment, equipmentCounter);
+          reverseEquipmentMap.put(equipmentCounter, equipment);
+          equipmentCounter++;
         }
         if (!levelMap.containsKey(level)) {
-          levelMap.put(level, levelCounter++);
+          levelMap.put(level, levelCounter);
+          reverseLevelMap.put(levelCounter, level);
+          levelCounter++;
         }
 
         Latihan latihan = new Latihan(
@@ -111,5 +125,21 @@ public class DataLoader {
     }
     // Default to "Body Only" if no other equipment found
     return equipmentMap.get("Body Only");
+  }
+
+  public String getTypeString(int value) {
+    return reverseTypeMap.get(value);
+  }
+
+  public String getBodyPartString(int value) {
+    return reverseBodyPartMap.get(value);
+  }
+
+  public String getEquipmentString(int value) {
+    return reverseEquipmentMap.get(value);
+  }
+
+  public String getLevelString(int value) {
+    return reverseLevelMap.get(value);
   }
 }

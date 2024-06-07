@@ -14,9 +14,11 @@ import dev.aviedb.myworkout.R;
 
 public class LatihanAdapter extends RecyclerView.Adapter<LatihanAdapter.LatihanViewHolder> {
   private List<Latihan> latihanList;
+  private DataLoader dataLoader;
 
-  public LatihanAdapter(List<Latihan> latihanList) {
+  public LatihanAdapter(List<Latihan> latihanList, DataLoader dataLoader) {
     this.latihanList = latihanList;
+    this.dataLoader = dataLoader;
   }
 
   @NonNull
@@ -29,7 +31,7 @@ public class LatihanAdapter extends RecyclerView.Adapter<LatihanAdapter.LatihanV
   @Override
   public void onBindViewHolder(@NonNull LatihanViewHolder holder, int position) {
     Latihan latihan = latihanList.get(position);
-    holder.bind(latihan);
+    holder.bind(latihan, dataLoader);
   }
 
   @Override
@@ -49,12 +51,12 @@ public class LatihanAdapter extends RecyclerView.Adapter<LatihanAdapter.LatihanV
       levelTextView = itemView.findViewById(R.id.levelTextView);
     }
 
-    void bind(Latihan latihan) {
+    void bind(Latihan latihan, DataLoader dataLoader) {
       titleTextView.setText(latihan.getTitle());
-      typeTextView.setText(String.valueOf(latihan.getType()));
-      bodyPartTextView.setText(String.valueOf(latihan.getBodyPart()));
-      equipmentTextView.setText(String.valueOf(latihan.getEquipment()));
-      levelTextView.setText(String.valueOf(latihan.getLevel()));
+      typeTextView.setText(dataLoader.getTypeString(latihan.getType()));
+      bodyPartTextView.setText(dataLoader.getBodyPartString(latihan.getBodyPart()));
+      equipmentTextView.setText(dataLoader.getEquipmentString(latihan.getEquipment()));
+      levelTextView.setText(dataLoader.getLevelString(latihan.getLevel()));
     }
   }
 }
