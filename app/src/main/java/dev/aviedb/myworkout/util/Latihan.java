@@ -15,6 +15,13 @@ public class Latihan {
     this.level = level;
   }
 
+  public Latihan(String title, int bodyPart, int equipment, int level) {
+    this.title = title;
+    this.bodyPart = bodyPart;
+    this.equipment = equipment;
+    this.level = level;
+  }
+
   // Getters
   public String getTitle() {
     return title;

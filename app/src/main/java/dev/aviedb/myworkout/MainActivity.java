@@ -23,7 +23,7 @@ import dev.aviedb.myworkout.util.Latihan;
 import dev.aviedb.myworkout.util.LatihanAdapter;
 
 public class MainActivity extends AppCompatActivity {
-  private Spinner spinnerType, spinnerBodyPart, spinnerLevel;
+  private Spinner spinnerBodyPart, spinnerLevel;
   private SwitchMaterial switchEquipment;
   private Button submitButton;
   private RecyclerView recyclerView;
@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    spinnerType = findViewById(R.id.spinnerType);
     spinnerBodyPart = findViewById(R.id.spinnerBodyPart);
     spinnerLevel = findViewById(R.id.spinnerLevel);
     switchEquipment = findViewById(R.id.switchEquipment);
@@ -46,15 +45,10 @@ public class MainActivity extends AppCompatActivity {
     dataLoader = new DataLoader(this);
     List<Latihan> semuaLatihan = dataLoader.loadDataset();
 
-    classifier = new KNNClassifier(3); // K value for KNN
+    classifier = new KNNClassifier(20);
     classifier.train(semuaLatihan);
 
     // Set up the spinners with the categories from the dataset
-    ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(this,
-        android.R.layout.simple_spinner_item, new ArrayList<>(dataLoader.getTypeMap().keySet()));
-    typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    spinnerType.setAdapter(typeAdapter);
-
     ArrayAdapter<String> bodyPartAdapter = new ArrayAdapter<>(this,
         android.R.layout.simple_spinner_item, new ArrayList<>(dataLoader.getBodyPartMap().keySet()));
     bodyPartAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -66,31 +60,30 @@ public class MainActivity extends AppCompatActivity {
     spinnerLevel.setAdapter(levelAdapter);
 
     submitButton.setOnClickListener(v -> {
-      String jenis = spinnerType.getSelectedItem().toString();
       String bodyPart = spinnerBodyPart.getSelectedItem().toString();
       String kesulitan = spinnerLevel.getSelectedItem().toString();
       boolean peralatan = switchEquipment.isChecked();
       String peralatanStr = peralatan ? "Yes" : "No";
-      if (jenis.isEmpty() || bodyPart.isEmpty() || kesulitan.isEmpty()) {
+
+      if (bodyPart.isEmpty() || kesulitan.isEmpty()) {
         Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
         return;
       }
 
-      Log.d("MainActivity", "Jenis: " + jenis + ", BodyPart: " + bodyPart + ", Kesulitan: " + kesulitan + ", Peralatan: " + peralatanStr);
+      Log.d("MainActivity", "BodyPart: " + bodyPart + ", Kesulitan: " + kesulitan + ", Peralatan: " + peralatanStr);
 
       // Convert user input to numerical values using the same maps as in DataLoader
-      Integer jenisValue = dataLoader.getTypeMap().get(jenis);
       Integer bodyPartValue = dataLoader.getBodyPartMap().get(bodyPart);
       Integer kesulitanValue = dataLoader.getLevelMap().get(kesulitan);
-      Integer peralatanValue = dataLoader.getEquipmentValue(peralatanStr);
+      int peralatanValue = dataLoader.getEquipmentValue(peralatanStr);
 
-      if (jenisValue == null || bodyPartValue == null || kesulitanValue == null || peralatanValue == null) {
-        Log.e("MainActivity", "One of the values is null. Please check the mappings.");
+      if (bodyPartValue == null || kesulitanValue == null) {
+        Log.e("MainActivity", bodyPartValue+",,,"+kesulitanValue);
         Toast.makeText(this, "Error in input values. Please check and try again.", Toast.LENGTH_SHORT).show();
         return;
       }
 
-      Latihan userLatihan = new Latihan("User Input", jenisValue, bodyPartValue, kesulitanValue, peralatanValue);
+      Latihan userLatihan = new Latihan("User Input", -1, bodyPartValue, peralatanValue, kesulitanValue);
       List<Latihan> rekomendasi = classifier.recommend(userLatihan);
       showRecommendations(rekomendasi);
     });
