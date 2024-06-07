@@ -6,6 +6,20 @@ public class Latihan {
   private int bodyPart;
   private int equipment;
   private int level;
+  private String desc;
+  private Double rating;
+  private String ratingDesc;
+
+  public Latihan(String title, int type, int bodyPart, int equipment, int level, String desc, Double rating, String ratingDesc) {
+    this.title = title;
+    this.type = type;
+    this.bodyPart = bodyPart;
+    this.equipment = equipment;
+    this.level = level;
+    this.desc = desc;
+    this.rating = rating;
+    this.ratingDesc = ratingDesc;
+  }
 
   public Latihan(String title, int type, int bodyPart, int equipment, int level) {
     this.title = title;
@@ -13,13 +27,9 @@ public class Latihan {
     this.bodyPart = bodyPart;
     this.equipment = equipment;
     this.level = level;
-  }
-
-  public Latihan(String title, int bodyPart, int equipment, int level) {
-    this.title = title;
-    this.bodyPart = bodyPart;
-    this.equipment = equipment;
-    this.level = level;
+    this.desc = null;
+    this.rating = 0.0;
+    this.ratingDesc = null;
   }
 
   // Getters
@@ -41,5 +51,17 @@ public class Latihan {
 
   public int getLevel() {
     return level;
+  }
+
+  public String getDesc() {
+    return desc;
+  }
+
+  public Double getRating() {
+    return rating;
+  }
+
+  public String getRatingDesc() {
+    return ratingDesc;
   }
 }

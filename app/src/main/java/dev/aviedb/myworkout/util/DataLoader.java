@@ -2,6 +2,7 @@ package dev.aviedb.myworkout.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.util.Log;
 
 import com.opencsv.CSVReader;
 
@@ -49,11 +50,15 @@ public class DataLoader {
       int levelCounter = 0;
 
       while ((nextLine = reader.readNext()) != null) {
+        Log.d("DataLoader", ""+nextLine[2]);
         String title = nextLine[1];
         String type = nextLine[3];
         String bodyPart = nextLine[4];
         String equipment = nextLine[5];
         String level = nextLine[6];
+        String desc = nextLine[2].isEmpty() ? null : nextLine[2];
+        Double rating = nextLine[7].isEmpty() ? null : Double.valueOf(nextLine[7]);
+        String ratingDesc = nextLine[8].isEmpty() ? null : nextLine[8];
 
         // Map categorical values to numerical and reverse
         if (!typeMap.containsKey(type)) {
@@ -82,7 +87,10 @@ public class DataLoader {
             typeMap.get(type),
             bodyPartMap.get(bodyPart),
             equipmentMap.get(equipment),
-            levelMap.get(level)
+            levelMap.get(level),
+            desc,
+            rating,
+            ratingDesc
         );
         latihanList.add(latihan);
       }
