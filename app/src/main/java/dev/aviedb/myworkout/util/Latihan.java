@@ -21,9 +21,9 @@ public class Latihan {
     this.ratingDesc = ratingDesc;
   }
 
-  public Latihan(String title, int type, int bodyPart, int equipment, int level) {
+  public Latihan(String title, int bodyPart, int equipment, int level) {
     this.title = title;
-    this.type = type;
+    this.type = -1;
     this.bodyPart = bodyPart;
     this.equipment = equipment;
     this.level = level;

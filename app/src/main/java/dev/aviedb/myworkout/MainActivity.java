@@ -1,7 +1,10 @@
 package dev.aviedb.myworkout;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import dev.aviedb.myworkout.util.DataLoader;
@@ -21,7 +25,7 @@ import dev.aviedb.myworkout.util.KNNClassifier;
 import dev.aviedb.myworkout.util.Latihan;
 import dev.aviedb.myworkout.util.LatihanAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
   private Spinner spinnerBodyPart, spinnerLevel;
   private SwitchMaterial switchEquipment;
   private Button submitButton;
@@ -29,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
   private LatihanAdapter adapter;
   private DataLoader dataLoader;
   private KNNClassifier classifier;
+
+  private Thread t;
+  private Handler h;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,25 +54,43 @@ public class MainActivity extends AppCompatActivity {
     classifier = new KNNClassifier(20);
     classifier.train(semuaLatihan);
 
-    // Set up the spinners with the categories from the dataset
-    ArrayAdapter<String> bodyPartAdapter = new ArrayAdapter<>(this,
-        android.R.layout.simple_spinner_item, new ArrayList<>(dataLoader.getBodyPartMap().keySet()));
+    List<String> bodyParts = new ArrayList<>(dataLoader.getBodyPartMap().keySet());
+    Collections.sort(bodyParts);
+
+    List<String> levels = new ArrayList<>(dataLoader.getLevelMap().keySet());
+    Collections.sort(levels);
+
+    ArrayAdapter<String> bodyPartAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, bodyParts);
     bodyPartAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     spinnerBodyPart.setAdapter(bodyPartAdapter);
 
-    ArrayAdapter<String> levelAdapter = new ArrayAdapter<>(this,
-        android.R.layout.simple_spinner_item, new ArrayList<>(dataLoader.getLevelMap().keySet()));
+    ArrayAdapter<String> levelAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, levels);
     levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     spinnerLevel.setAdapter(levelAdapter);
 
-    submitButton.setOnClickListener(v -> {
+    submitButton.setOnClickListener(this);
+  }
+
+  private void showRecommendations(List<Latihan> rekomendasi) {
+    this.h.post(() -> {
+      adapter = new LatihanAdapter(rekomendasi, dataLoader);
+      recyclerView.setAdapter(adapter);
+      recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    });
+  }
+
+  @Override
+  public void onClick(View v) {
+    this.t = new Thread(() -> {
       String bodyPart = spinnerBodyPart.getSelectedItem().toString();
       String kesulitan = spinnerLevel.getSelectedItem().toString();
       boolean peralatan = switchEquipment.isChecked();
       String peralatanStr = peralatan ? "Yes" : "No";
 
       if (bodyPart.isEmpty() || kesulitan.isEmpty()) {
-        Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        this.h.post(() ->
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+        );
         return;
       }
 
@@ -78,19 +103,18 @@ public class MainActivity extends AppCompatActivity {
 
       if (bodyPartValue == null || kesulitanValue == null) {
         Log.e("MainActivity", bodyPartValue+",,,"+kesulitanValue);
-        Toast.makeText(this, "Error in input values. Please check and try again.", Toast.LENGTH_SHORT).show();
+        this.h.post(() ->
+            Toast.makeText(this, "Error in input values. Please check and try again.", Toast.LENGTH_SHORT).show()
+        );
         return;
       }
 
-      Latihan userLatihan = new Latihan("User Input", -1, bodyPartValue, peralatanValue, kesulitanValue);
+      Latihan userLatihan = new Latihan("User Input", bodyPartValue, peralatanValue, kesulitanValue);
       List<Latihan> rekomendasi = classifier.recommend(userLatihan);
       showRecommendations(rekomendasi);
     });
-  }
 
-  private void showRecommendations(List<Latihan> rekomendasi) {
-    adapter = new LatihanAdapter(rekomendasi, dataLoader);
-    recyclerView.setAdapter(adapter);
-    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    this.h = new Handler(Looper.getMainLooper());
+    this.t.start();
   }
 }
