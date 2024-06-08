@@ -3,6 +3,8 @@
     <string name="workout_type">Workout Type</string>
     <string name="workout_bodypart">Bodypart to Train</string>
     <string name="workout_strength">Strength Level</string>
-    <string name="workout_tools">Use of tools?</string>
+    <string name="workout_tools">Use Gym Equipment</string>
+    <string name="body_part_label">Select Body Part to Train</string>
+    <string name="level_label">Select Difficulty Level</string>
     <string name="submit">Submit</string>
 </resources>

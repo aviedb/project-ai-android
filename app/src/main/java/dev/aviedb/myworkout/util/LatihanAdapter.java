@@ -1,5 +1,6 @@
 package dev.aviedb.myworkout.util;
 
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,11 +57,12 @@ public class LatihanAdapter extends RecyclerView.Adapter<LatihanAdapter.LatihanV
 
     void bind(Latihan latihan, DataLoader dataLoader) {
       titleTextView.setText(latihan.getTitle());
-      typeTextView.setText(dataLoader.getTypeString(latihan.getType()));
+      typeTextView.setText(String.format("%s Workout", dataLoader.getTypeString(latihan.getType())));
       bodyPartTextView.setText(dataLoader.getBodyPartString(latihan.getBodyPart()));
-      equipmentTextView.setText(dataLoader.getEquipmentString(latihan.getEquipment()));
+      equipmentTextView.setText(String.format("Equipment: %s", dataLoader.getEquipmentString(latihan.getEquipment())));
       levelTextView.setText(dataLoader.getLevelString(latihan.getLevel()));
       descTextView.setText(latihan.getDesc() != null ? latihan.getDesc() : "No description available");
+      descTextView.setTypeface(descTextView.getTypeface(), latihan.getDesc() != null ? Typeface.NORMAL : Typeface.ITALIC);
 
       String ratingStr = "N/A";
       if (latihan.getRating() != null && latihan.getRating() > 0) {
@@ -71,7 +73,6 @@ public class LatihanAdapter extends RecyclerView.Adapter<LatihanAdapter.LatihanV
       }
 
       ratingTextView.setText(ratingStr);
-//      ratingDescTextView.setText(latihan.getRatingDesc() != null ? latihan.getRatingDesc() : "No rating description");
     }
   }
 }

@@ -7,8 +7,8 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +26,7 @@ import dev.aviedb.myworkout.util.KNNClassifier;
 import dev.aviedb.myworkout.util.Latihan;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-  private Spinner spinnerBodyPart, spinnerLevel;
+  private AutoCompleteTextView spinnerBodyPart, spinnerLevel;
   private SwitchMaterial switchEquipment;
   private Button submitButton;
   private DataLoader dataLoader;
@@ -55,14 +55,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Collections.sort(bodyParts);
 
     List<String> levels = new ArrayList<>(dataLoader.getLevelMap().keySet());
-    Collections.sort(levels);
+//    Collections.sort(levels);
 
-    ArrayAdapter<String> bodyPartAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, bodyParts);
-    bodyPartAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    ArrayAdapter<String> bodyPartAdapter = new ArrayAdapter<>(this, R.layout.dropdown_item, bodyParts);
     spinnerBodyPart.setAdapter(bodyPartAdapter);
 
-    ArrayAdapter<String> levelAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, levels);
-    levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    ArrayAdapter<String> levelAdapter = new ArrayAdapter<>(this, R.layout.dropdown_item, levels);
     spinnerLevel.setAdapter(levelAdapter);
 
     submitButton.setOnClickListener(this);
@@ -82,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
   @Override
   public void onClick(View v) {
     this.t = new Thread(() -> {
-      String bodyPart = spinnerBodyPart.getSelectedItem().toString();
-      String kesulitan = spinnerLevel.getSelectedItem().toString();
+      String bodyPart = spinnerBodyPart.getText().toString();
+      String kesulitan = spinnerLevel.getText().toString();
       boolean peralatan = switchEquipment.isChecked();
       String peralatanStr = peralatan ? "Yes" : "No";
 
