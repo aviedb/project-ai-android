@@ -15,7 +15,7 @@ import dev.aviedb.myworkout.R;
 
 public class LatihanAdapter extends RecyclerView.Adapter<LatihanAdapter.LatihanViewHolder> {
   private List<Latihan> latihanList;
-  private DataLoader dataLoader;
+  private final DataLoader dataLoader;
 
   public LatihanAdapter(List<Latihan> latihanList, DataLoader dataLoader) {
     this.latihanList = latihanList;
@@ -40,8 +40,13 @@ public class LatihanAdapter extends RecyclerView.Adapter<LatihanAdapter.LatihanV
     return latihanList.size();
   }
 
+  public void updateData(List<Latihan> newLatihanList) {
+    this.latihanList = newLatihanList;
+    notifyDataSetChanged();
+  }
+
   static class LatihanViewHolder extends RecyclerView.ViewHolder {
-    private TextView titleTextView, typeTextView, bodyPartTextView, equipmentTextView, levelTextView, descTextView, ratingTextView;
+    private final TextView titleTextView, typeTextView, bodyPartTextView, equipmentTextView, levelTextView, descTextView, ratingTextView;
 
     LatihanViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -52,7 +57,6 @@ public class LatihanAdapter extends RecyclerView.Adapter<LatihanAdapter.LatihanV
       levelTextView = itemView.findViewById(R.id.levelTextView);
       descTextView = itemView.findViewById(R.id.descTextView);
       ratingTextView = itemView.findViewById(R.id.ratingTextView);
-//      ratingDescTextView = itemView.findViewById(R.id.ratingDescTextView);
     }
 
     void bind(Latihan latihan, DataLoader dataLoader) {
