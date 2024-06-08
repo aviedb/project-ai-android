@@ -14,19 +14,19 @@ import java.util.List;
 import java.util.Map;
 
 public class DataLoader {
-  private Context context;
+  private final Context context;
 
   // Maps to convert categorical values to numerical
-  private Map<String, Integer> typeMap = new HashMap<>();
-  private Map<String, Integer> bodyPartMap = new HashMap<>();
-  private Map<String, Integer> equipmentMap = new HashMap<>();
-  private Map<String, Integer> levelMap = new HashMap<>();
+  private final Map<String, Integer> typeMap = new HashMap<>();
+  private final Map<String, Integer> bodyPartMap = new HashMap<>();
+  private final Map<String, Integer> equipmentMap = new HashMap<>();
+  private final Map<String, Integer> levelMap = new HashMap<>();
 
   // Reverse maps to convert numerical values back to categorical values
-  private Map<Integer, String> reverseTypeMap = new HashMap<>();
-  private Map<Integer, String> reverseBodyPartMap = new HashMap<>();
-  private Map<Integer, String> reverseEquipmentMap = new HashMap<>();
-  private Map<Integer, String> reverseLevelMap = new HashMap<>();
+  private final Map<Integer, String> reverseTypeMap = new HashMap<>();
+  private final Map<Integer, String> reverseBodyPartMap = new HashMap<>();
+  private final Map<Integer, String> reverseEquipmentMap = new HashMap<>();
+  private final Map<Integer, String> reverseLevelMap = new HashMap<>();
 
   public DataLoader(Context context) {
     this.context = context;
@@ -50,7 +50,7 @@ public class DataLoader {
       int levelCounter = 0;
 
       while ((nextLine = reader.readNext()) != null) {
-        Log.d("DataLoader", ""+nextLine[2]);
+        Log.d("DataLoader", nextLine.length + "...");
         String title = nextLine[1];
         String type = nextLine[3];
         String bodyPart = nextLine[4];

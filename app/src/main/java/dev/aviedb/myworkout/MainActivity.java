@@ -1,5 +1,6 @@
 package dev.aviedb.myworkout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,9 +12,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.ArrayList;
@@ -21,16 +21,14 @@ import java.util.Collections;
 import java.util.List;
 
 import dev.aviedb.myworkout.util.DataLoader;
+import dev.aviedb.myworkout.util.DataLoaderSingleton;
 import dev.aviedb.myworkout.util.KNNClassifier;
 import dev.aviedb.myworkout.util.Latihan;
-import dev.aviedb.myworkout.util.LatihanAdapter;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
   private Spinner spinnerBodyPart, spinnerLevel;
   private SwitchMaterial switchEquipment;
   private Button submitButton;
-  private RecyclerView recyclerView;
-  private LatihanAdapter adapter;
   private DataLoader dataLoader;
   private KNNClassifier classifier;
 
@@ -46,9 +44,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     spinnerLevel = findViewById(R.id.spinnerLevel);
     switchEquipment = findViewById(R.id.switchEquipment);
     submitButton = findViewById(R.id.submitButton);
-    recyclerView = findViewById(R.id.recyclerView);
 
-    dataLoader = new DataLoader(this);
+    dataLoader = DataLoaderSingleton.getInstance(this);
     List<Latihan> semuaLatihan = dataLoader.loadDataset();
 
     classifier = new KNNClassifier(20);
@@ -73,9 +70,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
   private void showRecommendations(List<Latihan> rekomendasi) {
     this.h.post(() -> {
-      adapter = new LatihanAdapter(rekomendasi, dataLoader);
-      recyclerView.setAdapter(adapter);
-      recyclerView.setLayoutManager(new LinearLayoutManager(this));
+      Gson gson = new Gson();
+      String rekomendasiJson = gson.toJson(rekomendasi);
+
+      Intent i = new Intent(MainActivity.this, RecommendationActivity.class);
+      i.putExtra("REKOMENDASI_JSON", rekomendasiJson);
+      startActivity(i);
     });
   }
 

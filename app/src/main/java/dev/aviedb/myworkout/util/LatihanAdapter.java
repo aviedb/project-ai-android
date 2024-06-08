@@ -40,7 +40,7 @@ public class LatihanAdapter extends RecyclerView.Adapter<LatihanAdapter.LatihanV
   }
 
   static class LatihanViewHolder extends RecyclerView.ViewHolder {
-    private TextView titleTextView, typeTextView, bodyPartTextView, equipmentTextView, levelTextView, descTextView, ratingTextView, ratingDescTextView;
+    private TextView titleTextView, typeTextView, bodyPartTextView, equipmentTextView, levelTextView, descTextView, ratingTextView;
 
     LatihanViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -51,7 +51,7 @@ public class LatihanAdapter extends RecyclerView.Adapter<LatihanAdapter.LatihanV
       levelTextView = itemView.findViewById(R.id.levelTextView);
       descTextView = itemView.findViewById(R.id.descTextView);
       ratingTextView = itemView.findViewById(R.id.ratingTextView);
-      ratingDescTextView = itemView.findViewById(R.id.ratingDescTextView);
+//      ratingDescTextView = itemView.findViewById(R.id.ratingDescTextView);
     }
 
     void bind(Latihan latihan, DataLoader dataLoader) {
@@ -61,8 +61,17 @@ public class LatihanAdapter extends RecyclerView.Adapter<LatihanAdapter.LatihanV
       equipmentTextView.setText(dataLoader.getEquipmentString(latihan.getEquipment()));
       levelTextView.setText(dataLoader.getLevelString(latihan.getLevel()));
       descTextView.setText(latihan.getDesc() != null ? latihan.getDesc() : "No description available");
-      ratingTextView.setText((latihan.getRating() != null && latihan.getRating() > 0) ? String.valueOf(latihan.getRating()) : "N/A");
-      ratingDescTextView.setText(latihan.getRatingDesc() != null ? latihan.getRatingDesc() : "No rating description");
+
+      String ratingStr = "N/A";
+      if (latihan.getRating() != null && latihan.getRating() > 0) {
+        ratingStr = String.valueOf(latihan.getRating());
+
+        if (latihan.getRatingDesc() != null)
+          ratingStr += (" (" + latihan.getRatingDesc() + ")");
+      }
+
+      ratingTextView.setText(ratingStr);
+//      ratingDescTextView.setText(latihan.getRatingDesc() != null ? latihan.getRatingDesc() : "No rating description");
     }
   }
 }
